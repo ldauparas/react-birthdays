@@ -18,21 +18,18 @@ const base_url = 'https://en.wikipedia.org';
             })
         };
     });
+
+    const slicedCelebArr = celebArr.slice(15,21);
     
-    for (let celeb_url in celebArr.slice(15,20)) {
-        
-        var response = await fetch(base_url + celebArr[celeb_url]);
+    for (let celeb_url in slicedCelebArr) {
+        console.log('Scraping: ' + slicedCelebArr[celeb_url] + '....');
+        var response = await fetch(base_url + slicedCelebArr[celeb_url]);
         var text = await response.text();
         var dom = await new JSDOM(text);
-        /*
-        const tableArr = dom.window.document.querySelectorAll('table').forEach(tableElement => {
-            console.log(tableElement.querySelectorAll('img').forEach(a => {
-                console.log(a.getAttributeNode('src').textContent);
-            }));
-        })
-        */
-        const tableArr = dom.window.document.querySelectorAll('img').forEach(a => {
-            console.log(a.getAttributeNode('src').textContent);
+        
+        // TODO: pass into an object that stores Name, DOB, Image; skip cases with no image
+        const tableArr = dom.window.document.querySelectorAll('td > a > img').forEach(a => {
+            console.log(slicedCelebArr[celeb_url] + ': ~~~ ' + a.getAttributeNode('src').textContent);
         })
         
     }
